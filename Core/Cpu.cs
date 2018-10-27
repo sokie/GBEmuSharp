@@ -23,12 +23,52 @@ namespace GBEmuSharp.Core
         { 
             byte opcode = NextByte();
             switch (opcode) {
+                case 0x04: { Registers.B = IncrementRegister(Registers.B); break; }
+                case 0x05: { Registers.B = DecrementRegister(Registers.B); break; }
+                case 0x0C: { Registers.C = IncrementRegister(Registers.C); break; }
+                case 0x0D: { Registers.C = DecrementRegister(Registers.C); break; }
+                case 0x14: { Registers.D = IncrementRegister(Registers.D); break; }
+                case 0x15: { Registers.D = DecrementRegister(Registers.D); break; }
+                case 0x1C: { Registers.E = IncrementRegister(Registers.E); break; }
+                case 0x1D: { Registers.E = DecrementRegister(Registers.E); break; }
+                case 0x24: { Registers.H = IncrementRegister(Registers.H); break; }
+                case 0x25: { Registers.H = DecrementRegister(Registers.H); break; }
+
             }
         }
 
+        /*
+         *  Flags affected:
+            Z - Set if result is zero.
+            N - Reset.
+            H - Set if carry from bit 3.
+            C - Not affected.         */
+        //4 cycles
+        internal byte IncrementRegister(byte register)
+        {
+            byte result = ++register;
+            Flags.SetH((0x0F & result) < (0x0F & register));
+            Flags.SetN(false);
+            Flags.SetZ(register == 0);
+            return result;
+        }
 
-
-
+        /*
+         * 
+         * Flags affected:
+            Z - Set if reselt is zero.
+            N - Set.
+            H - Set if no borrow from bit 4.
+            C - Not affected
+          */
+        internal byte DecrementRegister(byte register)
+        {
+            byte result = --register;
+            Flags.SetH((register & 0x0F) == 0);
+            Flags.SetN(true);
+            Flags.SetZ(register == 0);
+            return result;
+        }
     }
 
     class Registers
