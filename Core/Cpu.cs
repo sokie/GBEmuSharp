@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GBEmuSharp.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,25 @@ namespace GBEmuSharp.Core
 
     class Cpu
     {
-       
+        public Registers Registers  { get; set; }
+        public Flags Flags { get; set; }
+        public Memory Rom { get; set; }
+
+        internal byte NextByte()
+        {
+            return Rom.Read(Registers.PC);
+        }
+
+        public void Step()
+        { 
+            byte opcode = NextByte();
+            switch (opcode) {
+            }
+        }
+
+
+
+
     }
 
     class Registers

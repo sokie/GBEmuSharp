@@ -36,14 +36,18 @@ Echo of 8kB Internal RAM
 16kB ROM bank #0 |
 --------------------------- 0000 --
 */
-        Memory rom = new Memory(0x8000, 0); //TODO: initialise to something
-        Memory videoRam = new Memory(0x2000, 0x8000);
-        Memory ram = new Memory(0x2000, 0xC000);
-        Memory oamRam = new Memory(0x00a0, 0xfe00); // Sprite attribute table
+        static Memory rom = new Memory(0x8000, 0); //TODO: initialise to something
+        static Memory videoRam = new Memory(0x2000, 0x8000);
+        static Memory ram = new Memory(0x2000, 0xC000);
+        static Memory oamRam = new Memory(0x00a0, 0xfe00); // Sprite attribute table
 
         static void Main(string[] args)
         {
-            
+            Cpu cpu = new Cpu();
+            cpu.Rom = rom;
+            while (true) {
+                cpu.Step();
+            }
         }
 
         public byte ReadByte(ushort address)
