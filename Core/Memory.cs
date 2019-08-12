@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GBEmuSharp.Core
 {
@@ -25,6 +21,36 @@ namespace GBEmuSharp.Core
                 throw new IndexOutOfRangeException("Address: " + address);
             }
             return memory[index];
+        }
+
+        public ushort ReadWord(ushort address)
+        {
+            int index = address - offset;
+            if (index < 0 || index >= memory.Length)
+            {
+                throw new IndexOutOfRangeException("Address: " + address);
+            }
+            return (ushort)(memory[index] + (memory[index+1] << 8));
+        }
+
+        public short ReadSWord(ushort address)
+        {
+            int index = address - offset;
+            if (index < 0 || index >= memory.Length)
+            {
+                throw new IndexOutOfRangeException("Address: " + address);
+            }
+            return (short)(memory[index] + (memory[index + 1] << 8));
+        }
+
+        public sbyte SRead(ushort address)
+        {
+            int index = address - offset;
+            if (index < 0 || index >= memory.Length)
+            {
+                throw new IndexOutOfRangeException("Address: " + address);
+            }
+            return (sbyte)memory[index];
         }
 
         public byte Write(ushort address, byte value) => memory[address - offset] = value;
